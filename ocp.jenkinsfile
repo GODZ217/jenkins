@@ -2,7 +2,7 @@ node {
    // Mark the code checkout 'stage'....
    stage 'Checkout'
    
-   sh "git clone https://github.com/GODZ217/jenkins.git"
+   sh "git clone https://github.com/GODZ217/jenkins.git source"
 
    // Get the maven tool.
    // ** NOTE: This 'M3' maven tool must be configured
