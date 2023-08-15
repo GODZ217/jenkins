@@ -2,6 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: java
+  namespace: javaservice
 spec:
   type: LoadBalancer
   selector:
@@ -16,10 +17,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: java
+  namespace: javaservice
   labels:
     app: java
 spec:
   replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0%
+      maxUnavailable: 25%
+  minReadySeconds: 5
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
       app: java
@@ -41,6 +50,10 @@ spec:
           requests:
             cpu: "0.25"
             memory: "250Mi"
+       
+
+
+   
 
 ---
 
@@ -48,11 +61,12 @@ apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: java
+  namespace: javaservice
 spec:
   maxReplicas: 1
   minReplicas: 1
   scaleTargetRef:
-    apiVersion: apps/v1beta1
+    apiVersion: extensions/v1beta1
     kind: Deployment
     name: java
   metrics:
