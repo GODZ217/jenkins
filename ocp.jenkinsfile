@@ -36,7 +36,7 @@ node {
      stage 'deploy'
 
       sh "sed 's,\\\$REGISTRY/\\\$HARBOR_NAMESPACE/\\\$APP_NAME:\\\$BUILD_NUMBER,image-registry.openshift-image-registry.svc:5000/javaservice/java:latest,g' kubernetes_dev.yaml > kubernetes-ocp.yaml"
-            sh "oc apply -f kubernetes-ocp.yaml -n javaservice "
+            sh "oc replace -f kubernetes-ocp.yaml -n javaservice "
             sh "oc set triggers deployment/java --from-image=javaservice/java:latest -c java -n javaservice || true "
 
 
