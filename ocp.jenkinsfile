@@ -30,8 +30,8 @@ node {
             sh "cat build-folder/Dockerfile | oc new-build -D - --name java || true"
             sh "oc start-build java --from-dir=build-folder/. --follow --wait "
             
-            sh "oc tag java:latest javaservice/java:${tag} "
-            sh "oc tag java:latest javaservice/java:latest "
+            sh "oc tag cicd/java:latest javaservice/java:${tag} "
+            sh "oc tag cicd/java:latest javaservice/java:latest "
 
      stage 'deploy'
 
