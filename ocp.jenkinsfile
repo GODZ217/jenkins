@@ -21,8 +21,7 @@ node {
 
             sh "mkdir -p build-folder/target/ build-folder/app/ "
             sh "cp ocp.Dockerfile build-folder/Dockerfile"
-            sh "cp config-http-jmx.yaml build-folder/config-http-jmx.yaml"
-            sh "cp jmx_prometheus_javaagent-0.15.0.jar build-folder/jmx_prometheus_javaagent-0.15.0.jar"
+            
 
             sh "cp target/*.jar build-folder/target/"
 
