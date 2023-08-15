@@ -20,7 +20,7 @@ node {
    stage 'push'
 
             sh "mkdir -p build-folder/target/ build-folder/app/ "
-            sh "cp ocp.Dockerfile build-folder/Dockerfile"
+            
             
 
             sh "cp target/*.jar build-folder/target/"
