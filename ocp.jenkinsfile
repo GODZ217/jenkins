@@ -20,11 +20,11 @@ node {
    stage 'push'
 
             sh "mkdir -p build-folder/target/ build-folder/app/ "
-            
+            sh "cp ocp.Dockerfile build-folder/Dockerfile"
             
 
             sh "cp target/*.jar build-folder/target/"
-
+            
             def tag = sh(returnStdout: true, script: "git rev-parse --short=8 HEAD").trim();
             
             sh "cat build-folder/Dockerfile | oc new-build -D - --name java || true"
