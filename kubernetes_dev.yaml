@@ -39,7 +39,7 @@ spec:
     spec:
       containers:
       - name: java
-        image: $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:$BUILD_NUMBER
+        image: image-registry.openshift-image-registry.svc:5000/openshift/httpd:latest
         ports:
         - containerPort: 8190
         imagePullPolicy: Always
