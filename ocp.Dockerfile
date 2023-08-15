@@ -1,7 +1,7 @@
 FROM ubi8-openjdk-11:1.3
 WORKDIR /app
 
-COPY ./target/*.jar ./app.jar
+COPY /target/.jar ./app.jar
 
 ENV TZ="Asia/Jakarta"
 RUN date
