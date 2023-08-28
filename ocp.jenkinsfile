@@ -1,4 +1,7 @@
 node {
+   def appName="java"
+    def projectName="javaservice"
+
    // Mark the code checkout 'stage'....
    stage 'Checkout'
    
@@ -12,6 +15,21 @@ node {
    // Mark the code build 'stage'....
    stage 'Build'
    // Run the maven build
+
+ sh "oc get imagestreamtag -o jsonpath='{.items[?(@.tag.name!=\"latest\")].metadata.name}' --sort-by={metadata.creationTimestamp} -n ${projectName} | grep ${appName} > version"
+            def versions = readFile('version')
+
+            versions = versions.replaceAll("\\s","\n")
+            timeout (time:10, unit: 'MINUTES'){
+            env.VERSION= input message : "promote ${appName} from DEV to DC and DRC", ok:"Promote",
+                                        parameters: [choice(name:'Image Version ordered by build date asc', choices:versions, description: 'Name App version to Promote')]
+            }
+            version=env.VERSION.replace("${appName}:", "")
+            echo "version selected ${version}"
+
+            echo "capturing token"
+            tokenLocal = sh(script: 'oc whoami -t', returnStdout: true).trim() 
+
    
    sh "git fetch"
    sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean package"
