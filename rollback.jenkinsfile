@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    
+    environment {
+        OPENSHIFT_URL = "console-openshift-console.apps.dev.mibocp.co.id"
+        OPENSHIFT_TOKEN = credentials('openshift-token') // Replace with your Jenkins credential ID
+        APP_NAME = "javaservice"
+        ROLLBACK_VERSION = "desired-rollback-version" // Replace with the version you want to rollback to
+    }
+
+    stages {
+        stage('Rollback') {
+            steps {
+                script {
+                    def ocCommand = "oc"
+                    
+                    // Log in to OpenShift
+                    sh "${ocCommand} login ${OPENSHIFT_URL} --token=${OPENSHIFT_TOKEN} --insecure-skip-tls-verify=true"
+
+                    // Set the active project/namespace
+                    sh "${ocCommand} project ${APP_NAME}"
+                    
+                    // Rollback the deployment
+                    sh "${ocCommand} rollback ${APP_NAME} --to-revision=${ROLLBACK_VERSION}"
+                }
+            }
+        }
+    }
+}
